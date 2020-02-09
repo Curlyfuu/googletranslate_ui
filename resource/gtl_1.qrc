@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="gtl_base">
+    <file>images/gtl_bg.jpg</file>
+  </qresource>
+</RCC>

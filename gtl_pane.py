@@ -1,11 +1,12 @@
 import threading
-from PyQt5.Qt import *
-from PyQt5.QtCore import QPoint
-from PyQt5.QtGui import QMouseEvent
+# from PyQt5.Qt import *
+from PyQt5.QtCore import QPoint, Qt
+from PyQt5.QtGui import QMouseEvent, QCloseEvent, QIcon
 from PyQt5.QtWidgets import QWidget, QApplication
 from resource.gtl import Ui_Form
 from gtl_functions import *
-import requests
+# import requests
+from requests import get
 import pyperclip
 import time
 
@@ -19,6 +20,8 @@ f_width = config["宽度"]
 f_height = config["高度"]
 f_op = config["最低透明度"]
 f_opchange = config["渐变"]
+f_soucela= config["源语言"]
+f_targetla = config["目标语言"]
 
 
 class Window(QWidget, Ui_Form):
@@ -114,9 +117,9 @@ if __name__ == '__main__':
                     im = im.replace('%', ' percent')
                     im = im.replace('&', 'and')
                     old_text = text
-                    full_url = url.format('en', "zh-CN", im)
+                    full_url = url.format(f_soucela, f_targetla, im)
                     try:
-                        r = requests.get(full_url)
+                        r = get(full_url)
                         if r.status_code == 429:
                             window.output_text.append('\n*****频繁访问，需要等待大约一个小时*****\n')
                         else:

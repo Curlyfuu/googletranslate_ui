@@ -6,3 +6,5 @@
 /build/
 /dist/
 /resource/
+/__pycache__/
+/.idea/

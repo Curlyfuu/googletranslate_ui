@@ -34,6 +34,14 @@
         "目标语言": "zh-CN"
 }
 ```
+## 4 打包:
+前提：已经安装了pyinstaller
+
+```
+python unpack2exe.py
+
+```
+
 
 
 

@@ -10,10 +10,6 @@ from requests import get
 import pyperclip
 import time
 
-# 获取显示器分辨率大小
-# screen_height = QApplication.desktop().height()
-# screen_width = QApplication.desktop().width()
-
 status_flag = 1
 url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl={}&tl={}&dt=t&q={}&ie=UTF-8&oe=UTF-8"
 old_text = ""
@@ -22,18 +18,22 @@ translation = ""
 doc_create()
 # 从config_gtl.json中获取配置
 config = load_config()
+
 try:
     f_op = config["最低透明度"]
 except:
     f_op = 0.6
+
 try:
     f_opchange = config["渐变"]
 except:
     f_opchange = True
+
 try:
     f_soucela = config["源语言"]
 except:
     f_soucela = 'en'
+
 try:
     f_targetla = config["目标语言"]
 except:
@@ -46,12 +46,12 @@ class Window(QWidget, Ui_Form):
         super().__init__()
         self.setAttribute(Qt.WA_StyledBackground, True)
         self.setupUi(self)
-
         self.desktop = QApplication.desktop()
         # 获取显示器分辨率大小
         self.screenRect = self.desktop.screenGeometry()
         self.height = self.screenRect.height()
         self.width = self.screenRect.width()
+        # 从json文件中读取设置的高度和宽度，否则设置为屏幕的1/4大小
         try:
             self.f_width = config["宽度"]
         except:
@@ -59,7 +59,7 @@ class Window(QWidget, Ui_Form):
         try:
             self.f_height = config["高度"]
         except:
-            self.f_width = self.height / 2
+            self.f_height = self.height / 2
         # 窗口状态：用于控制翻译线程的运行，多线程学得不好，应该会有更好的写法
         self.exit_state = 0
         if f_opchange == 1:
@@ -71,7 +71,7 @@ class Window(QWidget, Ui_Form):
         self.move(0, 0)
         self.resize(self.f_width, self.f_height)
 
-    # 名称错误,并非退出按钮,响应"我看懂了"按键，只是隐藏，再次复制时会自动出现
+    # 响应"我看懂了"按键，只是隐藏，再次复制时会自动出现
     def exit_btn(self):
         self.hide()
 
@@ -87,6 +87,7 @@ class Window(QWidget, Ui_Form):
         self.exit_state = 1
         self.close()
 
+    # 将窗口移动到左上方（top left，下面同理）
     def mv_tl(self):
         self.move(0, 0)
 
@@ -104,7 +105,8 @@ class Window(QWidget, Ui_Form):
         self.exit_state = 1
         self.close()
 
-    def mouseMoveEvent(self, e: QMouseEvent):  # 重写移动事件
+    # 重写移动事件，响应窗口的拖动
+    def mouseMoveEvent(self, e: QMouseEvent):
         self._endPos = e.pos() - self._startPos
         self.move(self.pos() + self._endPos)
 
@@ -121,6 +123,7 @@ class Window(QWidget, Ui_Form):
             self._startPos = None
             self._endPos = None
 
+    # 响应鼠标移入，并做渐变效果
     def enterEvent(self, event):
         op = f_op
         if f_opchange == 1:
@@ -130,6 +133,7 @@ class Window(QWidget, Ui_Form):
                 time.sleep(0.03)
             self.setWindowOpacity(1.0)
 
+    # 响应鼠标移出，并做渐变效果
     def leaveEvent(self, event):
         op = 1.0
         if f_opchange == 1:
@@ -147,7 +151,6 @@ if __name__ == '__main__':
     app.setWindowIcon(QIcon('gtl.ico'))
     window = Window()
 
-
     # 后台翻译线程
     def fun01():
         global translation, old_text, status_flag
@@ -159,36 +162,47 @@ if __name__ == '__main__':
                 text = pyperclip.paste()
                 text = text.replace('\r\n', ' ')
                 pyperclip.copy(text)
+                """
+                判断上一次的输入结果和这一次的输入是否相等；
+                上一次的输出与这一次的输入是否相等（由于程序将翻译结果又打印在了剪切板上【见下方代码】）
+                这两步是必须的，不然会一直发请求，一直翻译同一段文本
+                """
                 if old_text != text and translation != text:
                     window.show()
                     translation = ""
+                    # 消除复制文本中的回车和换行选项，对pdf复制的文本尤其适用
                     iput = text.replace('\r\n', ' ')
                     im = iput.replace('\n', ' ')
+                    # 翻译 % 会产生乱码，替换为 percent，下同理
                     im = im.replace('%', ' percent')
                     im = im.replace('&', 'and')
                     old_text = text
                     full_url = url.format(f_soucela, f_targetla, im)
                     try:
                         r = get(full_url)
-                        # 太过于频繁的复制谷歌会返回429，需要等待一到两个小时（经验）后方可恢复
+                        # 太过于频繁的复制，谷歌会返回429，需要等待一到两个小时（经验）后方可恢复
                         if r.status_code == 429:
                             window.output_text.append('\n*****频繁访问，需要等待大约一个小时*****\n')
                         else:
+                            # 从返回的json中提取翻译结果
                             if r.json()[0] is not None:
                                 for item in r.json()[0]:
-                                    if item[0] != None:
+                                    if item[0] is not None:
                                         try:
                                             translation += item[0].replace('\r', '')
                                         except:
                                             pass
+                            # 将翻译结果打印到窗口中
                             window.output_text.append("　　" + translation)
                     except:
                         window.output_text.append('\n*****出错了，请检查网络连通性！*****\n')
                     try:
+                        # 将打印结果写入剪切板中
                         pyperclip.copy(translation)
                     except:
                         window.output_text.append("****剪切板错误，请手动复制翻译结果！****\n")
                     try:
+                        # 将结果写入到单词本和历史记录中
                         write_doc(im, translation)
                     except:
                         window.output_text.append("写入文件错误")

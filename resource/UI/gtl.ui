@@ -98,6 +98,190 @@ p, li { white-space: pre-wrap; }
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
+       <widget class="QWidget" name="widget_3" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton_5">
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>ArrowCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+	margin: 0;
+	border-image: url(:/gtl_base/images/tl.png);
+	padding: 0;
+	border: none;
+
+
+}
+QPushButton:hover {
+	margin: 0;
+	border-image: url(:/gtl_base/images/tl.png);
+	padding: 0;
+	border: none;
+
+	border-radius: 4px;
+	background-color: rgb(250, 224, 129);
+}</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="pushButton_6">
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>ArrowCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+	margin: 0;
+	border-image: url(:/gtl_base/images/tr.png);
+padding: 0;
+border: none;
+
+}
+QPushButton:hover{
+margin: 0;
+border-image: url(:/gtl_base/images/tr.png);
+padding: 0;
+border: none;
+
+background-color: rgb(250, 224, 129);
+border-radius: 4px;
+}
+
+</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QPushButton" name="pushButton_7">
+           <property name="minimumSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>ArrowCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+margin: 0;
+border-image: url(:/gtl_base/images/bl.png);
+padding: 0;
+border: none;
+
+}
+QPushButton:hover{
+margin: 0;
+border-image: url(:/gtl_base/images/bl.png);
+padding: 0;
+border: none;
+background-color: rgb(250, 224, 129);
+border-radius: 4px;
+}
+
+
+</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QPushButton" name="pushButton_8">
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>ArrowCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+margin: 0;
+border-image: url(:/gtl_base/images/br.png);
+padding: 0;
+border: none;
+
+}
+QPushButton:hover{
+margin: 0;
+border-image: url(:/gtl_base/images/br.png);
+padding: 0;
+border: none;
+
+background-color: rgb(250, 224, 129);
+border-radius: 4px;
+}
+</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="pushButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
@@ -214,7 +398,7 @@ QPushButton:hover{
    <hints>
     <hint type="sourcelabel">
      <x>788</x>
-     <y>585</y>
+     <y>578</y>
     </hint>
     <hint type="destinationlabel">
      <x>663</x>
@@ -229,8 +413,8 @@ QPushButton:hover{
    <slot>cp_source()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>88</x>
-     <y>585</y>
+     <x>166</x>
+     <y>578</y>
     </hint>
     <hint type="destinationlabel">
      <x>0</x>
@@ -270,11 +454,79 @@ QPushButton:hover{
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton_5</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>mv_tl()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>25</x>
+     <y>541</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-76</x>
+     <y>546</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_6</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>mv_tr()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>56</x>
+     <y>544</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>61</x>
+     <y>666</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_7</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>mv_bl()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>16</x>
+     <y>577</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>16</x>
+     <y>675</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_8</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>mv_br()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>63</x>
+     <y>570</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>97</x>
+     <y>657</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>exit_btn()</slot>
   <slot>cp_source()</slot>
   <slot>clear_text()</slot>
   <slot>exit_all()</slot>
+  <slot>mv_tl()</slot>
+  <slot>mv_tr()</slot>
+  <slot>mv_bl()</slot>
+  <slot>mv_br()</slot>
  </slots>
 </ui>

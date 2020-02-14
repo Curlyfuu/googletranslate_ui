@@ -49,6 +49,111 @@ class Ui_Form(object):
         self.widget_2.setObjectName("widget_2")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.widget_2)
         self.horizontalLayout.setObjectName("horizontalLayout")
+        self.widget_3 = QtWidgets.QWidget(self.widget_2)
+        self.widget_3.setMinimumSize(QtCore.QSize(60, 60))
+        self.widget_3.setMaximumSize(QtCore.QSize(60, 60))
+        self.widget_3.setStyleSheet("")
+        self.widget_3.setObjectName("widget_3")
+        self.gridLayout = QtWidgets.QGridLayout(self.widget_3)
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout.setSpacing(0)
+        self.gridLayout.setObjectName("gridLayout")
+        self.pushButton_5 = QtWidgets.QPushButton(self.widget_3)
+        self.pushButton_5.setMaximumSize(QtCore.QSize(40, 40))
+        self.pushButton_5.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+        self.pushButton_5.setStyleSheet("QPushButton {\n"
+"    margin: 0;\n"
+"    border-image: url(:/gtl_base/images/tl.png);\n"
+"    padding: 0;\n"
+"    border: none;\n"
+"\n"
+"\n"
+"}\n"
+"QPushButton:hover {\n"
+"    margin: 0;\n"
+"    border-image: url(:/gtl_base/images/tl.png);\n"
+"    padding: 0;\n"
+"    border: none;\n"
+"\n"
+"    border-radius: 4px;\n"
+"    background-color: rgb(250, 224, 129);\n"
+"}")
+        self.pushButton_5.setText("")
+        self.pushButton_5.setObjectName("pushButton_5")
+        self.gridLayout.addWidget(self.pushButton_5, 0, 0, 1, 1)
+        self.pushButton_6 = QtWidgets.QPushButton(self.widget_3)
+        self.pushButton_6.setMaximumSize(QtCore.QSize(40, 40))
+        self.pushButton_6.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+        self.pushButton_6.setStyleSheet("QPushButton{\n"
+"    margin: 0;\n"
+"    border-image: url(:/gtl_base/images/tr.png);\n"
+"padding: 0;\n"
+"border: none;\n"
+"\n"
+"}\n"
+"QPushButton:hover{\n"
+"margin: 0;\n"
+"border-image: url(:/gtl_base/images/tr.png);\n"
+"padding: 0;\n"
+"border: none;\n"
+"\n"
+"background-color: rgb(250, 224, 129);\n"
+"border-radius: 4px;\n"
+"}\n"
+"\n"
+"")
+        self.pushButton_6.setText("")
+        self.pushButton_6.setObjectName("pushButton_6")
+        self.gridLayout.addWidget(self.pushButton_6, 0, 1, 1, 1)
+        self.pushButton_7 = QtWidgets.QPushButton(self.widget_3)
+        self.pushButton_7.setMinimumSize(QtCore.QSize(30, 30))
+        self.pushButton_7.setMaximumSize(QtCore.QSize(30, 30))
+        self.pushButton_7.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+        self.pushButton_7.setStyleSheet("QPushButton{\n"
+"margin: 0;\n"
+"border-image: url(:/gtl_base/images/bl.png);\n"
+"padding: 0;\n"
+"border: none;\n"
+"\n"
+"}\n"
+"QPushButton:hover{\n"
+"margin: 0;\n"
+"border-image: url(:/gtl_base/images/bl.png);\n"
+"padding: 0;\n"
+"border: none;\n"
+"background-color: rgb(250, 224, 129);\n"
+"border-radius: 4px;\n"
+"}\n"
+"\n"
+"\n"
+"")
+        self.pushButton_7.setText("")
+        self.pushButton_7.setObjectName("pushButton_7")
+        self.gridLayout.addWidget(self.pushButton_7, 1, 0, 1, 1)
+        self.pushButton_8 = QtWidgets.QPushButton(self.widget_3)
+        self.pushButton_8.setMaximumSize(QtCore.QSize(40, 40))
+        self.pushButton_8.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+        self.pushButton_8.setStyleSheet("QPushButton{\n"
+"margin: 0;\n"
+"border-image: url(:/gtl_base/images/br.png);\n"
+"padding: 0;\n"
+"border: none;\n"
+"\n"
+"}\n"
+"QPushButton:hover{\n"
+"margin: 0;\n"
+"border-image: url(:/gtl_base/images/br.png);\n"
+"padding: 0;\n"
+"border: none;\n"
+"\n"
+"background-color: rgb(250, 224, 129);\n"
+"border-radius: 4px;\n"
+"}\n"
+"")
+        self.pushButton_8.setText("")
+        self.pushButton_8.setObjectName("pushButton_8")
+        self.gridLayout.addWidget(self.pushButton_8, 1, 1, 1, 1)
+        self.horizontalLayout.addWidget(self.widget_3)
         self.pushButton = QtWidgets.QPushButton(self.widget_2)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
@@ -112,6 +217,10 @@ class Ui_Form(object):
         self.pushButton.clicked.connect(Form.cp_source)
         self.pushButton_3.clicked.connect(Form.clear_text)
         self.pushButton_4.clicked.connect(Form.exit_all)
+        self.pushButton_5.clicked.connect(Form.mv_tl)
+        self.pushButton_6.clicked.connect(Form.mv_tr)
+        self.pushButton_7.clicked.connect(Form.mv_bl)
+        self.pushButton_8.clicked.connect(Form.mv_br)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):

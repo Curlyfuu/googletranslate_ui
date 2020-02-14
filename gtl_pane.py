@@ -10,18 +10,34 @@ from requests import get
 import pyperclip
 import time
 
+# 获取显示器分辨率大小
+# screen_height = QApplication.desktop().height()
+# screen_width = QApplication.desktop().width()
+
 status_flag = 1
 url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl={}&tl={}&dt=t&q={}&ie=UTF-8&oe=UTF-8"
 old_text = ""
 translation = ""
+# 生成词汇表和历史记录
 doc_create()
+# 从config_gtl.json中获取配置
 config = load_config()
-f_width = config["宽度"]
-f_height = config["高度"]
-f_op = config["最低透明度"]
-f_opchange = config["渐变"]
-f_soucela= config["源语言"]
-f_targetla = config["目标语言"]
+try:
+    f_op = config["最低透明度"]
+except:
+    f_op = 0.6
+try:
+    f_opchange = config["渐变"]
+except:
+    f_opchange = True
+try:
+    f_soucela = config["源语言"]
+except:
+    f_soucela = 'en'
+try:
+    f_targetla = config["目标语言"]
+except:
+    f_targetla = 'zh-CN'
 
 
 class Window(QWidget, Ui_Form):
@@ -30,32 +46,63 @@ class Window(QWidget, Ui_Form):
         super().__init__()
         self.setAttribute(Qt.WA_StyledBackground, True)
         self.setupUi(self)
+
+        self.desktop = QApplication.desktop()
+        # 获取显示器分辨率大小
+        self.screenRect = self.desktop.screenGeometry()
+        self.height = self.screenRect.height()
+        self.width = self.screenRect.width()
+        try:
+            self.f_width = config["宽度"]
+        except:
+            self.f_width = self.width / 2
+        try:
+            self.f_height = config["高度"]
+        except:
+            self.f_width = self.height / 2
+        # 窗口状态：用于控制翻译线程的运行，多线程学得不好，应该会有更好的写法
         self.exit_state = 0
         if f_opchange == 1:
             self.setWindowOpacity(f_op)
         else:
             self.setWindowOpacity(1.0)
+        # 始终将窗口置顶
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
-        self.move(100, 100)
-        self.resize(f_width, f_height)
+        self.move(0, 0)
+        self.resize(self.f_width, self.f_height)
 
+    # 名称错误,并非退出按钮,响应"我看懂了"按键，只是隐藏，再次复制时会自动出现
     def exit_btn(self):
         self.hide()
 
     def cp_source(self):
         pyperclip.copy(old_text)
 
+    # 清除文本框
     def clear_text(self):
         self.output_text.clear()
 
+    # 响应按键的退出
     def exit_all(self):
         self.exit_state = 1
         self.close()
 
+    def mv_tl(self):
+        self.move(0, 0)
+
+    def mv_tr(self):
+        self.move(self.width - self.f_width, 0)
+
+    def mv_bl(self):
+        self.move(0, self.height - self.f_height)
+
+    def mv_br(self):
+        self.move(self.width - self.f_width, self.height - self.f_height)
+
+    # 响应状态栏的右键退出
     def closeEvent(self, e: QCloseEvent):
         self.exit_state = 1
         self.close()
-
 
     def mouseMoveEvent(self, e: QMouseEvent):  # 重写移动事件
         self._endPos = e.pos() - self._startPos
@@ -95,10 +142,13 @@ class Window(QWidget, Ui_Form):
 
 if __name__ == '__main__':
     import sys
+
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon('gtl.ico'))
     window = Window()
 
+
+    # 后台翻译线程
     def fun01():
         global translation, old_text, status_flag
         while True:
@@ -120,10 +170,11 @@ if __name__ == '__main__':
                     full_url = url.format(f_soucela, f_targetla, im)
                     try:
                         r = get(full_url)
+                        # 太过于频繁的复制谷歌会返回429，需要等待一到两个小时（经验）后方可恢复
                         if r.status_code == 429:
                             window.output_text.append('\n*****频繁访问，需要等待大约一个小时*****\n')
                         else:
-                            if r.json()[0] != None:
+                            if r.json()[0] is not None:
                                 for item in r.json()[0]:
                                     if item[0] != None:
                                         try:
@@ -144,6 +195,7 @@ if __name__ == '__main__':
             except:
                 pass
             time.sleep(0.2)
+
 
     t01 = threading.Thread(target=fun01)
     t01.start()

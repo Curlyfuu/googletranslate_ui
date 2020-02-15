@@ -46,6 +46,7 @@ class Window(QWidget, Ui_Form):
         super().__init__()
         self.setAttribute(Qt.WA_StyledBackground, True)
         self.setupUi(self)
+        self.rs = 0
         self.desktop = QApplication.desktop()
         # 获取显示器分辨率大小
         self.screenRect = self.desktop.screenGeometry()
@@ -116,12 +117,19 @@ class Window(QWidget, Ui_Form):
             self._isTracking = True
             self._startPos = QPoint(e.x(), e.y())
 
+
+
     def mouseReleaseEvent(self, e: QMouseEvent):
         # LeftButton = 1
         if e.button() == Qt.LeftButton:
             self._isTracking = False
             self._startPos = None
             self._endPos = None
+
+    # def mouseDoubleClickEvent(self, QMouseEvent):
+    #
+    #     print(app.doubleClickInterval())
+    #     self.move(200, 200)
 
     # 响应鼠标移入，并做渐变效果
     def enterEvent(self, event):
@@ -149,7 +157,9 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon('gtl.ico'))
+    # app.setDoubleClickInterval(200)
     window = Window()
+
 
     # 后台翻译线程
     def fun01():

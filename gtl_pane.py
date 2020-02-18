@@ -12,7 +12,7 @@ import time
 
 status_flag = 1
 url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl={}&tl={}&dt=t&q={}&ie=UTF-8&oe=UTF-8"
-old_text = ""
+old_text = pyperclip.paste()
 translation = ""
 # 生成词汇表和历史记录
 doc_create()

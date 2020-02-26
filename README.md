@@ -1,9 +1,10 @@
 ## 0 下载
 - 可执行程序：
 
-链接：https://pan.baidu.com/s/1sTK6cNy5he5QELV5bELXjQ 
+链接：~~https://pan.baidu.com/s/1sTK6cNy5he5QELV5bELXjQ~~
 
 提取码：ng9r 
+码云的发行版：https://gitee.com/coldcurlyfu/automatic_google_translation/releases
 
 ## 1 运行如下：
 

@@ -1,11 +1,9 @@
 import threading
-# from PyQt5.Qt import *
 from PyQt5.QtCore import QPoint, Qt
 from PyQt5.QtGui import QMouseEvent, QCloseEvent, QIcon
 from PyQt5.QtWidgets import QWidget, QApplication
 from resource.gtl import Ui_Form
 from gtl_functions import *
-# import requests
 from requests import get
 import pyperclip
 import time
@@ -87,8 +85,6 @@ class Window(QWidget, Ui_Form):
             self.pushButton_2.setText('暂停')
             self.pauseStatus = False
 
-
-
     def cp_source(self):
         pyperclip.copy(old_text)
 
@@ -130,19 +126,12 @@ class Window(QWidget, Ui_Form):
             self._isTracking = True
             self._startPos = QPoint(e.x(), e.y())
 
-
-
     def mouseReleaseEvent(self, e: QMouseEvent):
         # LeftButton = 1
         if e.button() == Qt.LeftButton:
             self._isTracking = False
             self._startPos = None
             self._endPos = None
-
-    # def mouseDoubleClickEvent(self, QMouseEvent):
-    #
-    #     print(app.doubleClickInterval())
-    #     self.move(200, 200)
 
     # 响应鼠标移入，并做渐变效果
     def enterEvent(self, event):
@@ -170,7 +159,6 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon('gtl.ico'))
-    # app.setDoubleClickInterval(200)
     window = Window()
 
 
@@ -190,9 +178,8 @@ if __name__ == '__main__':
                 上一次的输出与这一次的输入是否相等（由于程序将翻译结果又打印在了剪切板上【见下方代码】）
                 这两步是必须的，不然会一直发请求，一直翻译同一段文本
                 """
-                if old_text != text and translation != text and window.pauseStatus != True:
-                    window.show()
-                    # window.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
+                if old_text != text and translation != text and not window.pauseStatus:
+                    old_text = text
                     window.activateWindow()
                     translation = ""
                     # 消除复制文本中的回车和换行选项，对pdf复制的文本尤其适用
@@ -201,7 +188,6 @@ if __name__ == '__main__':
                     # 翻译 % 会产生乱码，替换为 percent，下同理
                     im = im.replace('%', ' percent')
                     im = im.replace('&', 'and')
-                    old_text = text
                     full_url = url.format(f_soucela, f_targetla, im)
                     try:
                         r = get(full_url)
@@ -235,9 +221,7 @@ if __name__ == '__main__':
                 pass
             time.sleep(0.2)
 
-
     t01 = threading.Thread(target=fun01)
     t01.start()
     window.show()
     sys.exit(app.exec_())
-    t01.join()

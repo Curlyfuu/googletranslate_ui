@@ -231,10 +231,10 @@ class Ui_Form(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'华文楷体\'; font-size:18pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:14pt;\"><br /></p></body></html>"))
-        self.pushButton.setText(_translate("Form", "复制英文"))
+        self.pushButton.setText(_translate("Form", "复制原文"))
         self.pushButton_3.setText(_translate("Form", "清空"))
         self.pushButton_4.setText(_translate("Form", "退出"))
-        self.pushButton_2.setText(_translate("Form", "我看懂了"))
+        self.pushButton_2.setText(_translate("Form", "暂停"))
 import gtl_1_rc
 
 

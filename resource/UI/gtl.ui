@@ -305,7 +305,7 @@ QPushButton:hover{
 }</string>
         </property>
         <property name="text">
-         <string>复制英文</string>
+         <string>复制原文</string>
         </property>
        </widget>
       </item>
@@ -377,7 +377,7 @@ QPushButton:hover{
 }</string>
         </property>
         <property name="text">
-         <string>我看懂了</string>
+         <string>暂停</string>
         </property>
        </widget>
       </item>

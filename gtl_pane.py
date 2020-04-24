@@ -55,6 +55,8 @@ class Window(QWidget, Ui_Form):
         self.screenRect = self.desktop.screenGeometry()
         self.height = self.screenRect.height()
         self.width = self.screenRect.width()
+
+        self.pauseStatus = False
         # 从json文件中读取设置的高度和宽度，否则设置为屏幕的1/4大小
         try:
             self.f_width = config["宽度"]
@@ -71,13 +73,21 @@ class Window(QWidget, Ui_Form):
         else:
             self.setWindowOpacity(1.0)
         # 始终将窗口置顶
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
+        # self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
+        self.setWindowFlags(Qt.FramelessWindowHint)
         self.move(0, 0)
         self.resize(self.f_width, self.f_height)
 
     # 响应"我看懂了"按键，只是隐藏，再次复制时会自动出现
     def exit_btn(self):
-        self.hide()
+        if not self.pauseStatus:
+            self.pushButton_2.setText('继续')
+            self.pauseStatus = True
+        else:
+            self.pushButton_2.setText('暂停')
+            self.pauseStatus = False
+
+
 
     def cp_source(self):
         pyperclip.copy(old_text)
@@ -180,8 +190,10 @@ if __name__ == '__main__':
                 上一次的输出与这一次的输入是否相等（由于程序将翻译结果又打印在了剪切板上【见下方代码】）
                 这两步是必须的，不然会一直发请求，一直翻译同一段文本
                 """
-                if old_text != text and translation != text:
+                if old_text != text and translation != text and window.pauseStatus != True:
                     window.show()
+                    # window.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
+                    window.activateWindow()
                     translation = ""
                     # 消除复制文本中的回车和换行选项，对pdf复制的文本尤其适用
                     iput = text.replace('\r\n', ' ')

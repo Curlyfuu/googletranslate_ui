@@ -11,7 +11,7 @@ import time
 status_flag = 1
 url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl={}&tl={}&dt=t&q={}&ie=UTF-8&oe=UTF-8"
 try:
-    old_text = pyperclip.paste()
+    old_text = pyperclip.paste().replace('\r\n', ' ')
 except:
     pass
 translation = ""
@@ -170,55 +170,59 @@ if __name__ == '__main__':
                 app.exit(0)
                 exit(0)
             try:
-                text = pyperclip.paste()
-                text = text.replace('\r\n', ' ')
-                pyperclip.copy(text)
+
                 """
                 判断上一次的输入结果和这一次的输入是否相等；
                 上一次的输出与这一次的输入是否相等（由于程序将翻译结果又打印在了剪切板上【见下方代码】）
                 这两步是必须的，不然会一直发请求，一直翻译同一段文本
                 """
-                if old_text != text and translation != text and not window.pauseStatus:
-                    old_text = text
-                    window.activateWindow()
-                    translation = ""
-                    # 消除复制文本中的回车和换行选项，对pdf复制的文本尤其适用
-                    iput = text.replace('\r\n', ' ')
-                    im = iput.replace('\n', ' ')
-                    # 翻译 % 会产生乱码，替换为 percent，下同理
-                    im = im.replace('%', ' percent')
-                    im = im.replace('&', 'and')
-                    full_url = url.format(f_soucela, f_targetla, im)
-                    try:
-                        r = get(full_url)
-                        # 太过于频繁的复制，谷歌会返回429，需要等待一到两个小时（经验）后方可恢复
-                        if r.status_code == 429:
-                            window.output_text.append('\n*****频繁访问，需要等待大约一个小时*****\n')
-                        else:
-                            # 从返回的json中提取翻译结果
-                            if r.json()[0] is not None:
-                                for item in r.json()[0]:
-                                    if item[0] is not None:
-                                        try:
-                                            translation += item[0].replace('\r', '')
-                                        except:
-                                            pass
-                            # 将翻译结果打印到窗口中
-                            window.output_text.append("　　" + translation)
-                    except:
-                        window.output_text.append('\n*****出错了，请检查网络连通性！*****\n')
-                    try:
-                        # 将打印结果写入剪切板中
-                        pyperclip.copy(translation)
-                    except:
-                        window.output_text.append("****剪切板错误，请手动复制翻译结果！****\n")
-                    try:
-                        # 将结果写入到单词本和历史记录中
-                        write_doc(im, translation)
-                    except:
-                        window.output_text.append("写入文件错误")
+                if not window.pauseStatus:
+                    text = pyperclip.paste()
+                    text = text.replace('\r\n', ' ')
+                    pyperclip.copy(text)
+
+                    if old_text != text and translation != text:
+                        old_text = text
+                        window.activateWindow()
+                        translation = ""
+                        # 消除复制文本中的回车和换行选项，对pdf复制的文本尤其适用
+                        iput = text.replace('\r\n', ' ')
+                        im = iput.replace('\n', ' ')
+                        # 翻译 % 会产生乱码，替换为 percent，下同理
+                        im = im.replace('%', ' percent')
+                        im = im.replace('&', 'and')
+                        full_url = url.format(f_soucela, f_targetla, im)
+                        try:
+                            r = get(full_url)
+                            # 太过于频繁的复制，谷歌会返回429，需要等待一到两个小时（经验）后方可恢复
+                            if r.status_code == 429:
+                                window.output_text.append('\n*****频繁访问，需要等待大约一个小时*****\n')
+                            else:
+                                # 从返回的json中提取翻译结果
+                                if r.json()[0] is not None:
+                                    for item in r.json()[0]:
+                                        if item[0] is not None:
+                                            try:
+                                                translation += item[0].replace('\r', '')
+                                            except:
+                                                pass
+                                # 将翻译结果打印到窗口中
+                                window.output_text.append("　　" + translation)
+                        except:
+                            window.output_text.append('\n*****出错了，请检查网络连通性！*****\n')
+                        try:
+                            # 将打印结果写入剪切板中
+                            pyperclip.copy(translation)
+                        except:
+                            window.output_text.append("****剪切板错误，请手动复制翻译结果！****\n")
+                        try:
+                            # 将结果写入到单词本和历史记录中
+                            write_doc(im, translation)
+                        except:
+                            window.output_text.append("写入文件错误")
+                        window.activateWindow()
             except:
-                pass
+                window.activateWindow()
             time.sleep(0.2)
 
     t01 = threading.Thread(target=fun01)
